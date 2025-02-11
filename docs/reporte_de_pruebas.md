@@ -1,4 +1,4 @@
-# Reporte de Pruebas - Cierre de Testing de MVP de ClassKit
+# Reporte de Pruebas - Cierre de Testing de MVP de TechBooker
 
 #### 06/02/2025
 
@@ -27,15 +27,18 @@ Enlaces a los documentos donde se detallan los resultados de las pruebas:
 ## Hallazgos Clave
 
 ### Formulario de Registro
-- Un error recurrente indicaba que el teléfono ya estaba registrado, aunque se ingresaban números nuevos, lo que sugiere un problema en la validación del backend.  
-  - Este problema fue corregido posteriormente al ser comunicado a los desarrolladores. **Es necesario hacer testing de confirmación sobre este punto.**  
+
+- Un error recurrente indicaba que el teléfono ya estaba registrado, aunque se ingresaban números nuevos, lo que sugiere un problema en la validación del backend.
+  - Este problema fue corregido posteriormente al ser comunicado a los desarrolladores. **Es necesario hacer testing de confirmación sobre este punto.**
 
 ### Gestión de Usuarios
+
 - Se identificaron fallos críticos de seguridad que permiten a un administrador de una institución ver, eliminar y editar administradores y usuarios de otras instituciones.
 - No se validan adecuadamente los datos en la edición de usuarios.
 - Es posible modificar la contraseña de otro usuario sin autenticación adicional.
 
 ### Otros Módulos
+
 - La gestión de reservas presenta errores al intentar realizar nuevas reservas y visualizar las existentes.
 - La funcionalidad de búsqueda y filtrado en inventario y usuarios no opera correctamente, mostrando errores 404.
 - Al recargar la página, se produce un error 404 en cualquier sección.
