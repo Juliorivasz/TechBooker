@@ -3,7 +3,8 @@ import { Reservation } from '../../models/teacher/ReservationGetUser';
 import { revertDate } from '../../utils/stringReverse';
 import { useNavigate } from 'react-router-dom';
 import { UseReservations } from '../../helpers/hooks/UseReservations';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import LoaderModal from '../../components/Loader';
 
 interface DataReservationProps {
 	dataReservations: Reservation[] | null;
@@ -21,6 +22,8 @@ export const Reservations: React.FC<DataReservationProps> = ({
 	setDataReserve,
 }) => {
 	const navigate = useNavigate();
+
+	const [loading, setLoading] = useState(false);
 
 	const {
 		deleteReservation,
@@ -45,6 +48,7 @@ export const Reservations: React.FC<DataReservationProps> = ({
 
 	const handleDeleteReservation = async (id: number | undefined) => {
 		try {
+			setLoading(true);
 			const isok = await deleteReservation(id);
 			if (setDataReserve && dataReservations && isok) {
 				const newReservations = await getReservationTeacher();
@@ -57,6 +61,8 @@ export const Reservations: React.FC<DataReservationProps> = ({
 			}
 		} catch (error) {
 			console.error('Error eliminando la reserva:', error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -71,6 +77,7 @@ export const Reservations: React.FC<DataReservationProps> = ({
 	};
 	return (
 		<div>
+			<LoaderModal show={loading} task='eliminar_reserva' />
 			<div className='overflow-x-auto overflow-y-auto h-[400px]'>
 				<table className='min-w-full divide-y divide-gray-200 rounded-md shadow-md'>
 					<thead>

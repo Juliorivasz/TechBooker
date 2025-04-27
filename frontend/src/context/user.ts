@@ -11,6 +11,7 @@ export interface AuthContextType {
 	loginUser: (userData: UserCredentials) => Promise<LoginResponse>;
 	logout: () => void;
 	logoutIntentional: boolean | null;
+	loading?: boolean;
 }
 
 export interface LoginResponse {

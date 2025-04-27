@@ -22,7 +22,6 @@ const Users = () => {
 		setLoading(true);
 		const newPage = page + 1;
 		const response = await userService.getAllUsers(newPage);
-		setLoading(false);
 		setUsers((prevUsers) =>
 			JSON.stringify(prevUsers) !== JSON.stringify(response.content)
 				? [...prevUsers, ...response.content]
@@ -32,6 +31,7 @@ const Users = () => {
 		if (response.totalPages - 1 === newPage) {
 			setAreThereMore(false);
 		}
+		setLoading(false);
 	};
 
 	const handleMoreUsers = async () => {

@@ -7,6 +7,7 @@ import {
 	ReservationSimple,
 } from '../../models/teacher/ReservationGetUser';
 import Swal from 'sweetalert2';
+import LoaderModal from '../../components/Loader';
 
 interface Resource {
 	id: number;
@@ -33,6 +34,7 @@ const AddNewReservation = () => {
 	);
 	const [selectedTime, setSelectedTime] = useState<string>('');
 	const [selectedTurn, setSelectedTurn] = useState<string>('');
+	const [loading, setLoading] = useState(false);
 	const { getAllDevices } = DeviceService();
 	const { getAllReservationsData, createNewReservation } = UseReservations();
 
@@ -130,6 +132,7 @@ const AddNewReservation = () => {
 	const handleConfirmReservation = async () => {
 		if (selectedDate && selectedTurn && selectedTime && selectedResource) {
 			try {
+				setLoading(true);
 				await createNewReservation({
 					startDate: selectedDate,
 					reservationShiftStatus: selectedTurn,
@@ -145,12 +148,15 @@ const AddNewReservation = () => {
 				setSelectedTime('');
 			} catch (error) {
 				console.error('Error al crear la reserva:', error);
+			} finally {
+				setLoading(false);
 			}
 		}
 	};
 
 	return (
 		<div className='p-6 py-10 max-w-3xl mx-auto'>
+			<LoaderModal show={loading} task='nueva_reserva' />
 			<h2 className='text-4xl font-bold mb-4 text-sky-700'>
 				Añadir nueva reserva
 			</h2>

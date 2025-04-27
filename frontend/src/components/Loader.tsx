@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface LoaderModalProps {
-	show: boolean;
+	show: boolean | undefined;
 	task: string;
 }
 
@@ -18,8 +18,16 @@ const LoaderModal: React.FC<LoaderModalProps> = ({ show, task = '' }) => {
 				return 'Cargando docentes...';
 			case 'guardando_docentes':
 				return 'Guardando docente...';
+			case 'inventario':
+				return 'Mostrando inventario...';
 			case 'gestion_inventario':
 				return 'Actualizando inventario...';
+			case 'nueva_reserva':
+				return 'Guardando reservación...';
+			case 'modificar_reserva':
+				return 'Modificando reservación...';
+			case 'eliminar_reserva':
+				return 'Eliminando reservación...';
 			case 'reservas':
 				return 'Consultando reservas...';
 			case 'cierre_sesion':

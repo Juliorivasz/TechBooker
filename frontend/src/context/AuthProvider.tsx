@@ -10,6 +10,7 @@ const AuthProvider = createContext<AuthContextType | null>(null);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
 	const [logoutIntentional, setLogoutIntentional] = useState<boolean>(false);
+	const [loading, setLoading] = useState(false);
 
 	const [user, setUser] = useState<LoginResponse | null>(() => {
 		const storedUser = localStorage.getItem('user');
@@ -78,6 +79,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 			},
 		}).then((result) => {
 			if (result.isConfirmed) {
+				setLoading(true);
 				setLogoutIntentional(true);
 
 				setTimeout(() => {
@@ -88,13 +90,21 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 				}, 5000);
 
 				navigate('/login');
+				setLoading(false);
 			}
 		});
 	};
 
 	return (
 		<AuthProvider.Provider
-			value={{ user, isLoggedIn, loginUser, logout, logoutIntentional }}>
+			value={{
+				user,
+				isLoggedIn,
+				loginUser,
+				logout,
+				logoutIntentional,
+				loading,
+			}}>
 			{children}
 		</AuthProvider.Provider>
 	);

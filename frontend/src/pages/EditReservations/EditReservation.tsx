@@ -7,6 +7,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { DeviceService } from '../../services/ResourceService';
 import { Device } from '../../models/Device';
+import LoaderModal from '../../components/Loader';
 
 interface SubmitData {
 	startDate: string;
@@ -26,6 +27,7 @@ const EditReservation: React.FC = () => {
 	const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
 	const { getAllDevices } = DeviceService();
 	const [resourcesData, setResourceData] = useState<Device[]>();
+	const [loading, setLoading] = useState(false);
 
 	const { getReservationId, updateReservation, getAllReservationsData } =
 		UseReservations();
@@ -44,10 +46,13 @@ const EditReservation: React.FC = () => {
 		};
 
 		try {
+			setLoading(true);
 			await updateReservation(reservationUpdate);
 			navigate('/teacher-dashboard');
 		} catch (error) {
 			console.error('Error actualizando la reserva:', error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -132,6 +137,7 @@ const EditReservation: React.FC = () => {
 
 	return (
 		<div className='flex justify-center items-center min-h-[90vh] bg-gray-100 p-4 text-2xl'>
+			<LoaderModal show={loading} task='modificar_reserva' />
 			<div className='p-4 max-w-[50%] min-w-[500px] mx-auto bg-white rounded-xl shadow-md'>
 				<h2 className='text-4xl font-bold text-center text-sky-600 mb-4'>
 					Editar Reserva

@@ -50,7 +50,7 @@ const CheckReservations: React.FC = () => {
 
 	return (
 		<div className='relative bg-gray-100 shadow-md rounded border border-gray-200 px-8 pt-8 pb-8 mb-4 m-8'>
-			<LoaderModal show={loading} task='' />
+			<LoaderModal show={loading} task='reservas' />
 			<h2 className='text-4xl font-medium leading-6 text-sky-600 mb-4'>
 				Mis Reservas
 			</h2>

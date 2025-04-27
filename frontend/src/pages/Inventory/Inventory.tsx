@@ -6,13 +6,14 @@ import { InventoryCardGrid } from './InventoryCardGrid';
 import { InventorySearchingForm } from './InventorySearchingForm';
 import { InventoryTitle } from './InventoryTitle';
 import { showSuccessAlert } from '../../helpers/showGenericAlerts';
+import LoaderModal from '../../components/Loader';
 
 const Inventory = () => {
 	const deviceService = DeviceService();
 
 	const [firstRender, setFirstRender] = useState<boolean>(true);
 	const [devices, setDevices] = useState<Device[]>([]);
-
+	const [loading, setLoading] = useState(false);
 
 	const handleDeleteDevice = async (id: number) => {
 		await deviceService.deleteDeviceById(id);
@@ -28,6 +29,7 @@ const Inventory = () => {
 
 		if (devices.length === 0) {
 			const initialize = async () => {
+				setLoading(true);
 				const response = await deviceService.getAllDevices(0);
 				console.log(response);
 				setDevices((prevDevices) =>
@@ -35,6 +37,7 @@ const Inventory = () => {
 						? prevDevices
 						: response,
 				);
+				setLoading(false);
 			};
 			initialize();
 		}
@@ -47,6 +50,7 @@ const Inventory = () => {
         px-2
         sm:px-6
       '>
+				<LoaderModal show={loading} task='inventario' />
 				<InventoryTitle />
 				<InventorySearchingForm categories={[]} />
 				<InventoryCardGrid
