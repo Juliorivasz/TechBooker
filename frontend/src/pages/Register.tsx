@@ -10,6 +10,7 @@ import { UserRegister } from '../models/UserRegister';
 import { useAuthProvider } from '../context/AuthProvider';
 import Swal from 'sweetalert2';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import LoaderModal from '../components/Loader';
 
 const registerContainer =
 	'flex flex-col md:flex-row items-center justify-center gap-0 md:gap-10 lg:gap-20 bg-zinc-50 px-4 pt-16';
@@ -49,6 +50,7 @@ const Register: React.FC = () => {
 	const [formData, setFormData] = useState(initialFormData);
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
 	const { isLoggedIn, user, logoutIntentional } = useAuthProvider();
@@ -85,15 +87,19 @@ const Register: React.FC = () => {
 		}
 
 		try {
+			setLoading(true);
 			await registerRequest(formData);
 			navigate('/login');
 		} catch (error) {
 			console.error('Error al registrarse:', error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	return (
 		<div>
+			<LoaderModal show={loading} task='registro_institucion' />
 			<Header />
 
 			<div className={registerContainer}>

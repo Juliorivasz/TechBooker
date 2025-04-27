@@ -6,6 +6,7 @@ import { useAuthProvider } from '../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { routeList } from '../helpers/routeList';
 import { findPathByRouteType } from '../helpers/findRole';
+import LoaderModal from '../components/Loader';
 
 const mainContainer =
 	'flex flex-col items-center justify-center h-screen bg-zinc-50';
@@ -21,6 +22,7 @@ const buttonStyles =
 const Login: React.FC = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
 	const { user, loginUser, isLoggedIn, logoutIntentional } = useAuthProvider();
 	const navigate = useNavigate();
 
@@ -36,6 +38,7 @@ const Login: React.FC = () => {
 		e.preventDefault();
 
 		try {
+			setLoading(true);
 			const loginData = { email, password };
 			const { role } = await loginUser(loginData);
 			const urlDashboard = findPathByRouteType(routeList, role);
@@ -46,11 +49,14 @@ const Login: React.FC = () => {
 			}
 		} catch (error) {
 			console.error(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	return (
 		<div>
+			<LoaderModal show={loading} task='inicio_sesion' />
 			<Header />
 			<div className={mainContainer}>
 				<div className='flex align-middle'>

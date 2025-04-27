@@ -10,6 +10,7 @@ import { revertDate } from '../../utils/stringReverse';
 import { EmptyReservationsMessage } from './EmptyReservationsMessage';
 import { FiPlus } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import LoaderModal from '../../components/Loader';
 
 const CheckReservations: React.FC = () => {
 	const navigate = useNavigate();
@@ -19,6 +20,7 @@ const CheckReservations: React.FC = () => {
 	const [indiReservations, setIndiReservations] = useState<
 		Reservation[] | null
 	>(null);
+	const [loading, setLoading] = useState(false);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { getReservationTeacher, mergeConsecutiveReservations } =
 		UseReservations();
@@ -29,6 +31,7 @@ const CheckReservations: React.FC = () => {
 
 	useEffect(() => {
 		const fetchReservations = async () => {
+			setLoading(true);
 			const booking = await getReservationTeacher();
 
 			if (booking) {
@@ -36,6 +39,7 @@ const CheckReservations: React.FC = () => {
 				prevReservationsRef.current = booking;
 				setDataReservations(mergedReservations);
 			}
+			setLoading(false);
 		};
 		fetchReservations();
 	}, [getReservationTeacher, mergeConsecutiveReservations]);
@@ -46,6 +50,7 @@ const CheckReservations: React.FC = () => {
 
 	return (
 		<div className='relative bg-gray-100 shadow-md rounded border border-gray-200 px-8 pt-8 pb-8 mb-4 m-8'>
+			<LoaderModal show={loading} task='' />
 			<h2 className='text-4xl font-medium leading-6 text-sky-600 mb-4'>
 				Mis Reservas
 			</h2>
